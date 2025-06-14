@@ -49,13 +49,79 @@
 
 ## 二、中级SQL(week7-week8)
 #### 学习内容：
-1. 
+1. 学习多表查询，理解 INNER JOIN、LEFT/RIGHT JOIN、FULL JOIN 的区别和使用方法。
+2. 区分连接类型和连接条件。
+3. 学习完整性约束知识和视图相关内容。
 
 #### 重点笔记：
+1. 如何理解连接类型和连接条件？
+   * 连接类型决定：“哪些记录应该被保留在结果中”，包括`inner join`,`left outer join`,`right outer join`,`full outer join`.
+   * 连接条件决定：“两张表之间哪些行应该被认为是匹配的”，包括`natural join`,`on`,`using`.
+2. 不同的连接类型的区别？
+   * `A inner join B`:只返回A和B两个表中匹配的行；
+   * `A left join B`:返回A表的所有行，无论B表是否有匹配。如果B表没有匹配，则B的列显示NULL；
+   * `A right join B`:返回B表的所有行，无论A表是否有匹配。如果A表没有匹配，则A的列显示NULL；
+   * `A full join B`:返回两个表的所有行，无论是否有匹配。没有匹配的部分用NULL显示。
+3. 不同的连接条件的区别？
+   * `natural join`:隐式使用所有同名列；
+   * `on`:`A join B on A.id = B.id`;
+   * `using`:`A join B using(id)`;
+   * 默认join就是inner join。
+   * 自然连接输出只保留相同属性的一个。
+4. 当使用显式join语法时，连接条件应该使用on子句而不是where子句。
+5. where子句应该出现在所有join操作之后，用于过滤最终结果集。
 
 #### 补充学习：
+为了提升代码能力，完成`牛客网`的SQL快速入门的题目，用于上机练习。包括基础查询、条件查询、高级查询、多表查询、必会的常用函数以及综合练习，共42道题目。
+![image](https://github.com/user-attachments/assets/9d3c9055-447c-4c81-9180-6953fb341b31)
 
 ## 三、高级SQL(week9-week11)
+#### 学习内容：
+1. 学习了解了高级数据类型，包括时间和日期类型，point类型、如何自定义数据类型等，以及数据类型间转换语句。
+2. 学习SQL中的授权内容。
+3. 学习SQL中如何定义和使用函数。
+4. 了解触发器和如何使用程序语言访问SQL。
+5. 了解SQL注入攻击内容。
+
+#### 重点笔记：
+1. time和timestamp两种日期数据类型的区别？
+   * `time`：只表示时间（如：13:45:30），不含日期，默认精度为6位。
+   * `timestamp`：表示日期 + 时间（如：2025-06-13 13:45:30），默认精度为6位。
+2. 在对精度有要求的场景中，不要使用float、real、double precision，建议用numeric或decimal，后者是精确型的数据类型，适合金融类运算。
+3. 如何理解SQL中的授权？
+   * 在SQL中，“授权”（Authorization）指的是将特定操作权限赋予给用户或角色，控制他们对数据库中对象（如表、视图、函数等）的访问能力。
+   * 常见权限包括：SELECT、INSERT、UPDATE、DELETE、ALL PRIVILEGES、CREATE、ALTER、DROP等。
+   * 用户（User）是登录数据库的实体，角色（Role）是权限的集合，可以赋予多个用户共享。
+     ```sql
+     -- 创建角色并授予权限
+     CREATE ROLE analyst;
+     GRANT SELECT ON sales TO analyst;
+
+     -- 将角色赋给具体用户
+     GRANT analyst TO alice;
+4. 函数返回结果，过程用于执行一些操作。
+5. 函数基本要素包括：
+   * 函数名：清晰、有意义，符合命名规范
+   * 参数列表：指明输入变量及其数据类型
+   * 返回类型：函数执行结果的数据类型
+   * 函数体：包含逻辑、条件、返回值
+   * 语言类型：指定使用的语言（如 SQL）
+   * `$`表示函数体的定界符以及参数位置
+6. 什么是URL？
+   * URL（Uniform Resource Locator，统一资源定位符）是互联网上资源的地址，用于唯一标识并访问某个网络资源，比如网页、图片、视频、API 等。
+   * 可以看作浏览器或程序在访问网络资源时的“地址说明书”。
+   * 基本结构为：`协议://主机名:端口/路径?查询参数#片段`
+   * 协议（Scheme）：定义资源访问的协议类型，如`http`，`https`
+     主机名（Host）：标识资源所在的服务器，可以是域名或IP地址
+     端口（Port）：指定服务的网络端口，HTTP默认80端口，HTTPS默认443端口
+     路径（Path）：指定服务器上的资源位置，如`/index.html`
+7. 如何解决SQL恶意注入问题？
+   * 如果以字符串拼接的方式用SQL语句查询一名用户信息，如果用户输入的是：`' OR '1'='1`，拼接后变为`SELECT * FROM users WHERE username = '' OR '1'='1' `，则会返回所有用户的记录。如果用于登录验证，任何人都能“绕过密码”直接登录。
+   * 使用 ORM（对象关系映射，Object-Relational Mapping）防止 SQL 注入，本质上是通过参数绑定自动构建安全的SQL查询，而不是将用户输入直接拼接进SQL语句中，从而避免注入攻击。比如`User.objects.get(username="alice")`，ORM框架会自动将字段和表映射成SQL语句，并将"alice"作为安全参数传入给SQL，而不是字符串拼接，等价于手动写的 PreparedStatement。
+     
+#### 补充学习：
+完成`牛客网`的SQL热题的题目20道。
+![image](https://github.com/user-attachments/assets/894286df-8475-4246-aa76-0bb4c618f5b8)
 
 ## 四、数据库设计(week12-week13)
 
