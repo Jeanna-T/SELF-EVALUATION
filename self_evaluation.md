@@ -1,4 +1,5 @@
 # 数据库学习记录
+
 ## 一、数据库基本概念与操作(week1-week6)
 #### 学习内容：
 1. 了解什么是数据库和DBMS（Database-management system)
@@ -44,7 +45,20 @@
 [link](https://www.coursera.org/specializations/postgresql-for-everybody#courses) 
 
   * 学习记录：
-    * 1
+    * 1. SQL is not a procedural language.
+      2. SQL is a language that provides us opreations to Create,Read,Update,and Delete (CRUD) our data in a database.
+      3. SQL has no real concept of loop. But delete has kind of an implied loop around it. `WHERE`is like a loop plus an if statement.
+      4. `offset 1`is the second row,not the first row.
+      5. The power of SQL comes when we have more than one tables and we can exploit the relationships between the tables.
+      6.  `Indexes`:Indexes are shorcuts.As a table gets large,sacnning all the data to find a single row becomes very costly.There are techniques to shorten the scan as long as you create data structures and maintain those structures.`Hashes` and `Trees` are the most common indexes.
+      7.  When add an index like primary key, you are actually telling the database store the data about where the data is.
+      8.  `Database design`:The goal is to spread the data across multiple tables so end up with no replication of the data in the tables.
+      9.  Drawing a picture of the data objects for our application and then figuring out how to represent the objects and their relationships.
+      10.  Example:building a music data model: 
+           `Track -> Album -> Artist -> Genre`
+           
+  * 学习感悟：
+    * 课程内容由浅入深，讲授风格也很有趣，课程包括基本的SQL查询、数据建模、关系设计，到复杂的连接、聚合与子查询，层层递进，帮助我逐步建立起对数据库系统的整体认知。虽然目前只看到课程的第一部分，但是让我在掌握基础的SQL语法基础上，了解了SQL底层存储与设计逻辑，体会到数据背后的逻辑结构与管理思维。英文的讲解能够让我对数据库中的一些概念有了更好的理解，接下来会利用空余时间看完后续课程。。
 
 
 ## 二、中级SQL(week7-week8)
@@ -74,6 +88,7 @@
 #### 补充学习：
 为了提升代码能力，完成`牛客网`的SQL快速入门的题目，用于上机练习。包括基础查询、条件查询、高级查询、多表查询、必会的常用函数以及综合练习，共42道题目。
 ![image](https://github.com/user-attachments/assets/9d3c9055-447c-4c81-9180-6953fb341b31)
+
 
 ## 三、高级SQL(week9-week11)
 #### 学习内容：
@@ -124,8 +139,86 @@
 ![image](https://github.com/user-attachments/assets/894286df-8475-4246-aa76-0bb4c618f5b8)
 
 ## 四、数据库设计(week12-week13)
+#### 学习内容：
+1. 学习了E-R图的概念、如何建立E-R图、如何将E-R图转化为关系模式。
+2. 学习关系数据库的范式，理解什么是“好的模式”。
+3. 学习模式分解、函数依赖的概念以及BCNF和3NF两种范式。
+4. 自主探索draw.io的使用。
+   
+#### 重点笔记：
+1. 为什么E-R图中可以出现复合属性和多值属性，关系模型却要求原子性？
+   * E-R图用于概念建模，帮助设计者理解和表达现实世界中的数据结构，允许更丰富的属性类型是为了更自然描述现实世界。
+   * 关系模型用于逻辑实现，是数据库实际存储和操作的数据结构，要求原子性、不能有表的嵌套关系、每个单元格只能有一个值。
+   * 在将E-R模型转换为关系模型时，必须“拆分”或“规范化”复合属性和多值属性。
+     ```text
+     原E-R属性：name { first_name, middle_name, last_name }
+     转换后关系模型属性：first_name, middle_name, last_name
+2. 注意映射基数在E-R图中如何表示：
+   * 箭头从 many 指向 one 的一方。
+   * 两条线代表实体的全参与。
+3. 如何确定联系集的主码？
+   * 联系集的主码是能唯一标识每一个“联系”实例的一组属性。通常由参与联系的实体集的主码（或部分主码）组成，视联系的参与度和联系类型（多对多、一对多、一对一）而定。
+   * 如果是 one-to-many ，则主码 = “多”方实体的主码。
+   * 如果是 many-to-many，则主码 = 所有关联实体的主码的组合。
+4. 如何理解弱实体集？
+   * 自身没有足够的属性来唯一标识其实体的实体集，它依赖于另一个实体集（称为“强实体集”）来提供标识性。
+   * 在E-R图中以双线表示，转化为关系模型时需引入外键，并构造组合主键。
+6. E-R图转关系模式需要注意的问题：
+   * 复合属性要拆分为多个原子属性（满足第一范式）
+   * 多值属性要建立一个新关系，包括实体主码 + 属性值
+   * 弱实体集要引入强实体的主码作为外键
+7. 怎么理解范式？
+   * 范式（Normal Form）是关系数据库设计的一种形式规范，目标是减少数据冗余，避免插入、删除、更新异常，保持数据一致性和可维护性。
+   * 范式包括：1NF、2NF、3NF、BCNF
+   * 对于过大的模式，可能会存在数据冗余，更新异常，插入/删除异常，维护难度大等缺点。
+   * 对于过小的模式，可能会存在查询复杂，需要多表JOIN，连接多时可能影响性能的问题。
+8. BCNF和3NF的区别：
+   * BCNF
+     > 具有函数依赖集 F 的关系模式 R 属于 BCNF 的条件是，
+     > 对 F⁺ 中所有形如 α → β 的函数依赖，下面至少一个成立： 
+     > 
+     > - α → β 是平凡的函数依赖
+     > - α 是 R 的一个超码
+   * 3NF
+     > 具有函数依赖集 F 的关系模式 R 属于 3NF 的条件是，
+     > 对 F⁺ 中所有形如 α → β 的函数依赖，下面至少一个成立： 
+     > 
+     > - α → β 是平凡的函数依赖
+     > - α 是 R 的一个超码
+     > - β - α 的每个属性都属于R的某个候选码。
+
+   *BCNF 是比 3NF 更严格的范式，可能有函数依赖满足 3NF 但不满足 BCNF。
 
 ## 五、数据库存储、索引、查询与事务(week14-week16)
+#### 学习内容：
+学习如何实现数据库的底层逻辑，包括数据存储、索引机制、查询处理与优化和事务管理。
+
+#### 重点笔记：
+1. DBMS 如何在磁盘中存储数据？
+   * DBMS 通过将表中的数据组织为 Page 结构存储到磁盘文件中。
+   * DBMS 可以按照不同方式组织 Pages：堆文件组织，树文件组织，顺序文件组织，哈希文件组织。
+   * PostgreSQL 使用行存储：将一个元组的所有属性在 Page 里连续存储。
+2. DBMS 如何管理内存并与磁盘来回移动数据？
+   * 数据库在运行时，先从磁盘将数据页读入内存，在内存中进行所有的读写操作，必要时将“脏页”（被修改的页）写回磁盘。
+   * 为了避免因突然崩溃导致数据丢失，DBMS 采用 WAL（预写日志）机制：修改数据之前，先将操作记录写入日志文件。
+4. 查询的基本步骤：
+   * 解析（将 SQL 语句转换为内部表示） -> 优化（生成查询计划） -> 执行（执行查询计划）
+5. 如何理解事务？
+   * 事务是数据库管理系统中一组逻辑上的操作单元，要么全部成功执行，要么全部失败回滚，不可中间停止或只执行部分。
+   * 事务的四大特性（ACID）：原子性、一致性、隔离性、持久性。
+   * 原子性:事务不可再分割（要么全做，要么全不做）
+   * 一致性:执行后数据库处于一致状态（比如转账后，账目总额保持不变）
+   * 隔离性:并发事务互不干扰（不同用户操作不会互相“看见”中间结果）
+   * 持久性:事务执行成功后效果永久保存（崩溃也不会丢失数据（依靠日志/WAL））
+6. 树索引 VS 哈希索引：
+   * 树索引是基于有序结构（通常是 B+ 树）实现的索引方式，用于支持范围查找、排序和范围扫描，操作的平均时间复杂度为对数级。
+   * 哈希索引基于哈希表结构，将键值通过哈希函数映射到固定位置，支持非常快速的等值查询，适用于精确查找，不支持范围查找或排序。
 
 # 自我评分
-
+#### 总分：46/50
+#### 分数分布:
+1. 课堂学习（20）：18
+2. 作业情况（10）：10
+3. 课后学习（10）：8
+4. 学习态度（10）：10
+   
