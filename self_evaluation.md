@@ -42,23 +42,22 @@
  
 #### 补充学习：
 学习网课密歇根大学《面向所有人的 PostgreSQL 专项课程|postgresql-for-everybody》
-[link](https://www.coursera.org/specializations/postgresql-for-everybody#courses) 
 
   * 学习记录：
     * 1. SQL is not a procedural language.
-      2. SQL is a language that provides us opreations to Create,Read,Update,and Delete (CRUD) our data in a database.
-      3. SQL has no real concept of loop. But delete has kind of an implied loop around it. `WHERE`is like a loop plus an if statement.
-      4. `offset 1`is the second row,not the first row.
+      2. SQL is a language that provides us operations to Create, Read, Update, and Delete (CRUD) our data in a database.
+      3. SQL has no real concept of loop. But delete has kind of an implied loop around it. `WHERE`is like a loop plus an `if` statement.
+      4. `offset 1` is the second row, not the first row.
       5. The power of SQL comes when we have more than one tables and we can exploit the relationships between the tables.
-      6.  `Indexes`:Indexes are shorcuts.As a table gets large,sacnning all the data to find a single row becomes very costly.There are techniques to shorten the scan as long as you create data structures and maintain those structures.`Hashes` and `Trees` are the most common indexes.
+      6.  `Indexes`:Indexes are shorcuts. As a table gets large, sacnning all the data to find a single row becomes very costly. There are techniques to shorten the scan as long as you create data structures and maintain those structures. `Hashes` and `Trees` are the most common indexes.
       7.  When add an index like primary key, you are actually telling the database store the data about where the data is.
-      8.  `Database design`:The goal is to spread the data across multiple tables so end up with no replication of the data in the tables.
+      8.  `Database design`: The goal is to spread the data across multiple tables so end up with no replication of the data in the tables.
       9.  Drawing a picture of the data objects for our application and then figuring out how to represent the objects and their relationships.
       10.  Example:building a music data model: 
            `Track -> Album -> Artist -> Genre`
            
   * 学习感悟：
-    * 课程内容由浅入深，讲授风格也很有趣，课程包括基本的SQL查询、数据建模、关系设计，到复杂的连接、聚合与子查询，层层递进，帮助我逐步建立起对数据库系统的整体认知。虽然目前只看到课程的第一部分，但是让我在掌握基础的SQL语法基础上，了解了SQL底层存储与设计逻辑，体会到数据背后的逻辑结构与管理思维。英文的讲解能够让我对数据库中的一些概念有了更好的理解，接下来会利用空余时间看完后续课程。。
+    * 课程内容由浅入深，讲授风格也很有趣，课程包括基本的SQL查询、数据建模、关系设计，到复杂的连接、聚合与子查询，层层递进，帮助我逐步建立起对数据库系统的整体认知。虽然目前只看到课程的第一部分，但是让我在掌握基础的SQL语法基础上，了解了SQL底层存储与设计逻辑，体会到数据背后的逻辑结构与管理思维。英文的讲解能够让我对数据库中的一些概念有了更好的理解，接下来会利用空余时间看完后续课程。
 
 
 ## 二、中级SQL(week7-week8)
@@ -99,7 +98,7 @@
 5. 了解SQL注入攻击内容。
 
 #### 重点笔记：
-1. time和timestamp两种日期数据类型的区别？
+1. time 和 timestamp 两种日期数据类型的区别？
    * `time`：只表示时间（如：13:45:30），不含日期，默认精度为6位。
    * `timestamp`：表示日期 + 时间（如：2025-06-13 13:45:30），默认精度为6位。
 2. 在对精度有要求的场景中，不要使用float、real、double precision，建议用numeric或decimal，后者是精确型的数据类型，适合金融类运算。
@@ -153,7 +152,7 @@
      ```text
      原E-R属性：name { first_name, middle_name, last_name }
      转换后关系模型属性：first_name, middle_name, last_name
-2. 注意映射基数在E-R图中如何表示：
+2. 映射基数在E-R图中如何表示：
    * 箭头从 many 指向 one 的一方。
    * 两条线代表实体的全参与。
 3. 如何确定联系集的主码？
@@ -164,12 +163,12 @@
    * 自身没有足够的属性来唯一标识其实体的实体集，它依赖于另一个实体集（称为“强实体集”）来提供标识性。
    * 在E-R图中以双线表示，转化为关系模型时需引入外键，并构造组合主键。
 6. E-R图转关系模式需要注意的问题：
-   * 复合属性要拆分为多个原子属性（满足第一范式）
-   * 多值属性要建立一个新关系，包括实体主码 + 属性值
-   * 弱实体集要引入强实体的主码作为外键
+   * 复合属性要拆分为多个原子属性（满足第一范式）。
+   * 多值属性要建立一个新关系，包括实体主码 + 属性码。
+   * 弱实体集要引入强实体的主码作为外键。
 7. 怎么理解范式？
    * 范式（Normal Form）是关系数据库设计的一种形式规范，目标是减少数据冗余，避免插入、删除、更新异常，保持数据一致性和可维护性。
-   * 范式包括：1NF、2NF、3NF、BCNF
+   * 范式包括：1NF、2NF、3NF、BCNF（后两者常用）
    * 对于过大的模式，可能会存在数据冗余，更新异常，插入/删除异常，维护难度大等缺点。
    * 对于过小的模式，可能会存在查询复杂，需要多表JOIN，连接多时可能影响性能的问题。
 8. BCNF和3NF的区别：
@@ -217,8 +216,7 @@
 # 自我评分
 #### 总分：46/50
 #### 分数分布:
-1. 课堂学习（20）：18
-2. 作业情况（10）：10
-3. 课后学习（10）：8
-4. 学习态度（10）：10
-   
+课堂学习（18/20） + 作业情况（10/10） + 课后学习（8/10） + 学习态度（10/10）
+#### 课程感悟：
+在数据库课程的学习中，完成了从零开始对数据库建立认知、慢慢了解掌握一些SQL语句到理解数据库运行逻辑和存储原理，我认为是本学期一段充实的学习经历。在课堂上我能做到每周及时跟进老师讲授的内容并做好笔记，刚开始学习还比较顺利，对于一些基础的查询语法在练习一些题之后就能基本掌握，但是到后期关于数据库设计和存储等理论部分就学得有些吃力，对于一些关于计算机抽象的概念难以理解，比如像模式分解、索引、页式存储等概念，必须反复琢磨还需要借助AI的帮助。在课外方面，我能做到每周按时、按质提交作业，虽然完成作业期间有用到大模型的帮助，但能保证自己对每道题目做到理解和掌握，在完成作业的过程中发现自己学习不到位的方面及时查漏补缺。同时，通过牛客网、b站网课的自主学习进一步提升了我对SQL的理解程度。
+数据库这门课程是我本科期间为数不多的偏计算机方面的课程，在让我学习到一些数据库基础知识的期间也让我认识到自己对于计算机方面了解的不足，要真正理解和运用数据库技术，还需要补足更多计算机基础知识，我认为这也是一名大数据技术专业的学生所应该具备的。最后感谢老师在整个学期中认真负责和耐心细致的讲授，老师严谨求实的态度也在潜移默化中激励着我以更加认真的态度对待这门课程。
